@@ -77,13 +77,20 @@ function Menu() {
       <h2>Our menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza {...pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <React.Fragment>
+          <p>
+            Contrary to popular belief, Lorem Ipsum is not simply random text.
+            It has roots in a piece of classical Latin literature from 45 BC,
+            making it over 2000 years
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </React.Fragment>
       ) : (
-        <p>Bye nigga</p>
+        <p>We are still working</p>
       )}
 
       {/* <Pizza {...pizzaData[1]} />
@@ -97,14 +104,15 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
+function Pizza({ pizzaObj }) {
   return (
-    <li className="pizza ">
-      <img src={props.photoName} alt={props.name}></img>
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      {/* <li className={pizzaObj.soldOut ? "pizza sold-out" : "pizza"}> */}
+      <img src={pizzaObj.photoName} alt={pizzaObj.name}></img>
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
       </div>
     </li>
   );
@@ -120,13 +128,12 @@ function Footer() {
   // if (hour >= openHour && hour <= closeHour) alert("We are open");
   // else alert("We are closed");
 
+  // if (!isOpen) return <p>CLOSED</p>;
+
   return (
     <footer className="footer">
       {isOpen ? (
-        <div className="order">
-          <p>We're open until {closeHour}:00 come visit us or order online!</p>
-          <button className="btn">Order</button>
-        </div>
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <p>
           We are happy to welcome you between {openHour}:00 - {closeHour}:00
@@ -135,6 +142,15 @@ function Footer() {
     </footer>
   );
   // return React.createElement("footer", null, "We are open");
+}
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>We're open until {closeHour}:00 come visit us or order online!</p>
+      <button className="btn">Order</button>
+    </div>
+  );
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
